@@ -15,8 +15,6 @@ from functools import partial
 
 from youtube_dl import YoutubeDL
 
-
-
 """Updated Youtube-DL to 2021.2.10 package"""
 
 ytdlopts = {
@@ -41,8 +39,6 @@ ffmpegopts = {
 }
 
 ytdl = YoutubeDL(ytdlopts)
-
-
 
 
 class VoiceConnectionError(commands.CommandError):
@@ -179,14 +175,14 @@ class MusicPlayer:
                         shutil.rmtree(file_path)
                 except Exception as e:
                     print("Failed to remove %s. Reason %s" % (file_path, e))
-                    #await self._channel.send("Failed to remove %s. Reason %s" % (file_path, e))
+                    # await self._channel.send("Failed to remove %s. Reason %s" % (file_path, e))
 
     def destroy(self, guild):
         """Disconnect and cleanup the player."""
         return self.bot.loop.create_task(self._cog.cleanup(guild))
 
 
-class MusicCog(commands.Cog):
+class Music(commands.Cog):
     __slots__ = ('bot', 'players')
 
     def __init__(self, bot):
@@ -422,10 +418,5 @@ class MusicCog(commands.Cog):
         await self.cleanup(ctx.guild)
 
 
-
-
-
-
-
 def setup(bot):
-    bot.add_cog(MusicCog(bot))
+    bot.add_cog(Music(bot))

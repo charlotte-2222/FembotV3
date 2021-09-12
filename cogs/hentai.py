@@ -13,7 +13,7 @@ import sys
 imgur = ImgurClient(imgurC, ImgurL)
 
 
-class NekosCog(commands.Cog, command_attrs=dict(hidden=True)):
+class NekosCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -85,7 +85,7 @@ class NekosCog(commands.Cog, command_attrs=dict(hidden=True)):
         await ctx.send(embed=embed)
         await ctx.message.delete()
 
-    # traps
+
     @commands.command(help="Femboy porn")
     @commands.cooldown(1, 2, commands.BucketType.user)
     async def femboy(self, ctx):

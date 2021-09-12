@@ -9,6 +9,7 @@ from pytz import timezone
 
 import discord
 from discord.ext import commands
+
 from utilityFunction.timeConvert import convert
 
 from mcstatus import MinecraftServer
@@ -19,39 +20,9 @@ def to_emoji(c):
     return chr(base + c)
 
 
-class ServerCog(commands.Cog, command_attrs=dict(hidden=True)):
+class Server(commands.Cog, command_attrs=dict(hidden=True)):
     def __init__(self, bot):
         self.bot = bot
-
-    @commands.command(aliases=["tu",
-                               "ml_update",
-                               "t_ml",
-                               "tmlu",
-                               "mltu"])
-    @commands.has_guild_permissions(manage_roles=True)
-    async def txt_update(self, ctx):
-        """Returns full list of server members + client ID's
-        useful for a number of functions - will likely consult client needs,
-        build more functions based on this"""
-        # count = len(open('text_dir/thiccFrag.txt').readlines())
-        count = len(open('text_dir/thiccNames.txt').readlines())
-        # with open('text_dir/thiccFrag.txt', 'w')as f:
-        with open('text_dir/thiccNames.txt', 'w')as f:
-            for member in ctx.guild.members:
-                try:
-                    print(f'{member.name}', file=f)
-                except:
-                    print(f"Unable to write an ID... continuing")
-                    continue
-
-            e = discord.Embed(title="Text file updated",
-                              description=f"Total member count at: {count}",
-                              timestamp=datetime.utcnow())
-            e.color = discord.Color.random()
-            e.set_thumbnail(url=ctx.guild.icon_url_as(size=1024, format=None, static_format="png"))
-            await ctx.send(embed=e)
-            print("done printing names")
-            await ctx.message.delete()
 
     @commands.command()
     @commands.has_guild_permissions(manage_roles=True)
@@ -224,28 +195,18 @@ class ServerCog(commands.Cog, command_attrs=dict(hidden=True)):
                         value=guild.premium_subscription_count or "hmmm... nothing here... :ghost:")
         embed.add_field(name="• Fembot Prefix ",
                         value="`^` •  `@Fembot`")
-        embed.set_image(url='https://i.imgur.com/fpcLFru.png')
 
         await ctx.send(embed=embed)
 
-    @commands.command(help="Shows you the current time in the specified timezone",
-                      pass_context=True,
-                      hidden=False,
-                      description="Available Timezones:\n"
-                                  "GMT, EST, AU, "
-                                  "SG, Crimea, MT, "
-                                  "PST, CST, NZ")
+    @commands.command(help='get the time')
     async def time(self, ctx, *timeZ):
         th = str(timeZ).upper()
         td = str(*timeZ)
         author = ctx.message.author
-        e = discord.Embed(title=f":globe_with_meridians: ",
-                          description=f"**\n"
-                                      f"{ctx.author.name} asked for {td} time!**\n",
+        e = discord.Embed(title=f":globe_with_meridians: ➤ **{ctx.author.name} asked for {td} time!**\n",
                           colour=discord.Color.magenta(),
                           timestamp=datetime.utcnow())
         e.color = discord.Color.magenta()
-        e.add_field(name="Convert", value=f"https://www.timeanddate.com/worldclock/converter.html")
         e.set_thumbnail(url="https://i.imgur.com/F72Lc77.png")
         e.set_footer(text="Time now  ")
 
@@ -304,46 +265,8 @@ class ServerCog(commands.Cog, command_attrs=dict(hidden=True)):
                               "https://www.timeanddate.com/worldclock/"
 
                         )
-
+        e.add_field(name="Convert", value=f"https://bit.ly/ConvertTZ")
         await ctx.message.reply(embed=e)
-
-
-    @commands.command(aliases=['meow_mc',
-                               'msping,'
-                               'mmp'],
-                      hidden=False,
-                      description="Pings Realm for availability")
-    async def meow_server(self, ctx):
-        try:
-            server = MinecraftServer(str("rad.meowstard.cat"), port=25565)
-            status = server.status()
-            online = status.players.online
-            max_players = status.players.max
-            ping = round(status.latency)
-            version = status.raw['version']['name']
-            up = discord.Embed(title="`RAD 2 | Meowstard`",
-                               description=f"Response time: {ping}\n"
-                                           f"Online: :white_check_mark:\n"
-                                           f"Version: {version}\n"
-                                           f"Max Players: {max_players}",
-                               colour=discord.Colour.green(),
-                               timestamp=datetime.utcnow()
-                               )
-            up.add_field(name="Players Online Now", value=f"{online}\n")
-            await ctx.send(embed=up)
-        except (ConnectionRefusedError,
-                OSError
-                ) as e:
-            offline = discord.Embed(
-                title=":exclamation: The Server is offline :exclamation:",
-                description="Sorry kids, the server is currently unavailable. "
-                            "Check back later. It's possible that the server is either under maintenance,"
-                            "or has briefly undergone a reset. Thank you for understanding.",
-                colour=discord.Color.red(),
-                timestamp=datetime.utcnow()
-            )
-            offline.add_field(name="Error:", value=f"{e}")
-            await ctx.send(embed=offline)
 
     @commands.command(aliases=['ping_minecraft',
                                'minecraft_status',
@@ -456,4 +379,4 @@ class ServerCog(commands.Cog, command_attrs=dict(hidden=True)):
 
 
 def setup(bot):
-    bot.add_cog(ServerCog(bot))
+    bot.add_cog(Server(bot))

@@ -5,6 +5,7 @@ import aiohttp
 import discord
 import requests
 from discord.ext import commands
+
 from imgurpython import ImgurClient
 from utilityFunction.config import *
 from utilityFunction import lists
@@ -14,12 +15,12 @@ from datetime import datetime
 imgur = ImgurClient(imgurC, ImgurL)
 
 
-class FunCog(commands.Cog):
+class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command(help="Measure your friend's dick",
-                      aliases=["dick", "penis"],
+                     aliases=["dick", "penis"],
                       pass_context=True)
     async def dong(self, ctx, user: discord.Member = None):
         """Detects user's dong length"""
@@ -32,8 +33,8 @@ class FunCog(commands.Cog):
                            colour=discord.Colour.magenta())
         await ctx.send(embed=em)
 
-    @commands.command(name="roll", aliases=["dice", "die"])
-    async def roll_die(self, ctx: commands.Context, dice_options: Union[str, int] = 6):
+    @commands.command(aliases=['roll'])
+    async def roll_die(self, ctx, dice_options: Union[str, int] = 6):
         max_dices = 20
         max_sides = 120
 
@@ -77,7 +78,7 @@ class FunCog(commands.Cog):
         else:
             msg = roll_results[0]
 
-        await  ctx.send(msg)
+        await ctx.send(msg)
 
     @commands.command(help="Lyrics of the cumzone, selected randomly",
                       aliases=["cs"])
@@ -111,12 +112,12 @@ class FunCog(commands.Cog):
                       pass_context=True)
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def cat(self, ctx):
-        response = requests.get('https://aws.random.cat/meow')
-        data = response.json()
+        response = requests.get('https://aws.random.cat/meow').json()
+        data = response
         embed = discord.Embed(
             title='🐈',
             description='A random cat, from the interwebs',
-            colour=discord.Colour.magenta()
+            colour=discord.Colour.random()
         )
         embed.set_image(url=data['file'])
         embed.set_footer(text="")
@@ -280,6 +281,7 @@ class FunCog(commands.Cog):
                       pass_contex=True,
                       aliases=["big"])
     async def BEEEG(self, ctx, *, text: str):
+        await ctx.message.delete()
         await ctx.send(
             getattr("", "join")(
                 [
@@ -328,6 +330,7 @@ class FunCog(commands.Cog):
             await ctx.message.delete()
 
     @commands.command(name="gayrate", aliases=["howgay"], brief="Rates your gayness")
+    @commands.cooldown(1, 3, commands.BucketType.user)
     async def gayrate(self, ctx, member: discord.Member = None):
         """Rate your gayness or another users gayness. 1-100% is returned"""
         user = member.name + " is" if member else "You are"
@@ -342,13 +345,20 @@ class FunCog(commands.Cog):
     @commands.command()
     async def imgsearch(self, ctx, *, term: str):
         # await ctx.typing
-
         t = term.replace(" ", "-")
         e = discord.Embed(title="Found it...",
                           colour=discord.Colour.random())
         e.set_image(url=f'https://source.unsplash.com/1600x900/?{t}')
         await ctx.reply(embed=e)
 
+    @commands.command()
+    async def enlarge(self, ctx, emoji: discord.PartialEmoji = None):
+        if not emoji:
+            await ctx.send("You need to provide a custom emoji!")
+        else:
+            await ctx.message.delete()
+            await ctx.send(emoji.url)
+
 
 def setup(bot):
-    bot.add_cog(FunCog(bot))
+    bot.add_cog(Fun(bot))

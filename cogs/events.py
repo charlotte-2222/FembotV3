@@ -2,7 +2,8 @@ import asyncio
 import random
 from datetime import datetime
 import time
-import schedule
+
+import PySimpleGUI as sg
 
 import discord
 from discord.ext import tasks, commands
@@ -20,6 +21,26 @@ class EventsCog(commands.Cog):
         print(time.strftime(f"Time at start:\n"
                             "%H:%M:%S\n"
                             "%m/%d/%Y\n"))
+
+        # layout = [[sg.Text(f'User: {self.bot.user}')],
+        #           [sg.Text(f'Bot: {self.bot.user.id}')],
+        #           [sg.Text(time.strftime(f'Time: %H:%M:%S'))],
+        #           [sg.Text(time.strftime(f'Date: %m/%d/%Y'))],
+        #           [sg.Button("Close")]]
+        #
+        # # Create the window
+        # window = sg.Window("Fembot", layout, margins=(200, 200)).read()
+        #
+        # # Create an event loop
+        # # while True:
+        # #     event, values = window.read()
+        # #     # End program if user closes window or
+        # #     # presses the OK button
+        # #     if event == "Close" or event == sg.WIN_CLOSED:
+        # #         break
+        # #
+        # # window.close()
+
 
         while True:
             await self.bot.change_presence(
@@ -108,7 +129,7 @@ class EventsCog(commands.Cog):
                                 description="OOPSIE WOOPSIE!! Uwu We make a fucky wucky!! A wittle fucko boingo! The "
                                             "code monkeys at our headquarters are working VEWY HAWD to fix this!",
                                 colour=discord.Colour.magenta())
-        errorEm.set_thumbnail(url="https://i.imgur.com/F72Lc77.png")
+        errorEm.set_thumbnail(url=self.bot.user.avatar_url)
         errorEm.add_field(name="Error: ", value=error)
         errorEm.set_footer(text="uwu use tha hwelp cummand")
         if isinstance(error, discord.ext.commands.MemberNotFound):

@@ -3,7 +3,7 @@ from discord.ext import commands
 import inspirobot
 
 
-class InspiroCog(commands.Cog):
+class Inspiro(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -35,4 +35,4 @@ class InspiroCog(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(InspiroCog(bot))
+    bot.add_cog(Inspiro(bot))

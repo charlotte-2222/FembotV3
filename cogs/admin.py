@@ -37,10 +37,10 @@ class AdminCog(commands.Cog, command_attrs=dict(hidden=True)):
             embed = discord.Embed(title=f":skull_crossbones: A member was kicked :skull_crossbones:",
                                   description=f"Member: {member}",
                                   timestamp=datetime.utcnow(),
-                                  colour=discord.Color.magenta())
+                                    colour=discord.Color.magenta())
             embed.set_thumbnail(url=member.avatar_url)
             await log.send(embed=embed)
-            await ban_kick.send(embed=embed)
+            await ctx.reply(f'{member.mention} is on the receiving end of "mod abuse" lmao')
         else:
             ed = discord.Embed(title=f":skull_crossbones: A member was kicked :skull_crossbones:",
                                description=f"{member}",
@@ -50,7 +50,7 @@ class AdminCog(commands.Cog, command_attrs=dict(hidden=True)):
                          value=f"{rearray}")
             ed.set_thumbnail(url=member.avatar_url)
             await log.send(embed=ed)
-            await ban_kick.send(embed=ed)
+            await ctx.reply(f'{member.mention} is on the receiving end of "mod abuse" lmao')
 
     @commands.command(help="unban members who were previously bad",
                       pass_context=True)
@@ -65,7 +65,6 @@ class AdminCog(commands.Cog, command_attrs=dict(hidden=True)):
         rearray = ' '.join(reason[:])
         await ctx.guild.ban(user=member)
         log = self.bot.get_channel(843568644373741598)
-        ban_kick = self.bot.get_channel(749362181782503455)
         if not rearray:
             e1 = discord.Embed(title=f":bangbang: A member was banned :bangbang:",
                                description='',
@@ -77,7 +76,7 @@ class AdminCog(commands.Cog, command_attrs=dict(hidden=True)):
                                f"*No Reason Specified For Ban*")
             e1.set_thumbnail(url=member.avatar_url)
             await log.send(embed=e1)
-            await ban_kick.send(embed=e1)
+            await ctx.reply(f'{member.mention} is on the receiving end of "mod abuse" lmao')
         else:
             e2 = discord.Embed(title=f":bangbang: A member was banned :bangbang:",
                                description='',
@@ -91,7 +90,7 @@ class AdminCog(commands.Cog, command_attrs=dict(hidden=True)):
 
             e2.set_thumbnail(url=member.avatar_url)
             await log.send(embed=e2)
-            await ban_kick.send(embed=e2)
+            await ctx.reply(f'{member.mention} is on the receiving end of "mod abuse" lmao')
 
     @commands.command(aliases=["mban"], usage="[member] (reason)", help="Ban multiple member at once")
     @commands.cooldown(1, 180, commands.BucketType.guild)

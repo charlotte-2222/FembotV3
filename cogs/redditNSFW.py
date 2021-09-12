@@ -12,7 +12,7 @@ reddit = praw.Reddit(client_id=redditC,
                      user_agent=redditU_A)
 
 
-class RedditNSFWCog(commands.Cog, command_attrs=dict(hidden=True)):
+class RedditNSFW(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -297,4 +297,4 @@ class RedditNSFWCog(commands.Cog, command_attrs=dict(hidden=True)):
 
 
 def setup(bot):
-    bot.add_cog(RedditNSFWCog(bot))
+    bot.add_cog(RedditNSFW(bot))

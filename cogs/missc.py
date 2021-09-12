@@ -10,7 +10,7 @@ print(str(currentDT.year) + ", " + str(currentDT.month) + ", " + str(currentDT.d
     currentDT.hour) + ", " + str(currentDT.minute) + ", " + str(currentDT.second))
 
 
-class MisscCog(commands.Cog):
+class Misc(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -93,4 +93,4 @@ class MisscCog(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(MisscCog(bot))
+    bot.add_cog(Misc(bot))

@@ -11,7 +11,7 @@ reddit = praw.Reddit(client_id=redditC,
                      user_agent=redditU_A)
 
 
-class RedditCog(commands.Cog):
+class Reddit(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -92,4 +92,4 @@ class RedditCog(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(RedditCog(bot))
+    bot.add_cog(Reddit(bot))

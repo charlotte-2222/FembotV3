@@ -48,7 +48,7 @@ def find_coeffs(pa, pb):
     return np.array(res).reshape(8)
 
 
-class ImageFunCog(commands.Cog):
+class Images(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -253,4 +253,4 @@ class ImageFunCog(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(ImageFunCog(bot))
+    bot.add_cog(Images(bot))

@@ -1,5 +1,6 @@
 import asyncio
 import random
+from datetime import datetime
 
 import discord
 from discord.ext import commands
@@ -9,21 +10,31 @@ class OnMessCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    # @commands.Cog.listener()
-    # async def on_message(self, message):
-    #     author = message.author
-    #     morning = open('text_dir/mornList.txt').read().splitlines()
-    #     goodnight = open('text_dir/gnList').read().splitlines()
-    #     dg = discord.Embed(title="uwu", description="",
-    #                        colour=discord.Colour.magenta())
-    #     dg.set_image(url="https://i.imgur.com/6hmvMu2.png")
-    #     myfile = discord.File('images/video0(1).mp4')
-    #     mincraft = discord.File('images/christianMinecraft.mp4')
-    #     insane = discord.File('images/insane.mp4')
-    #     beaners = discord.File('images/bean.mp4')
-    #     if message.author.bot:
-    #         return  # ignore all bots
-    #     content = message.content.casefold()
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        bs='https://media.tenor.co/videos/2cef78b78487b5089a13e7595d162c56/mp4'
+        dream_peen = open('text_dir/dream.txt').read().splitlines()
+        e = discord.Embed(title=random.choice(dream_peen),
+                          description='',
+                          color=discord.Color.green(),
+                          timestamp=datetime.utcnow())
+        e.set_thumbnail(url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT72G1sug35cD5yqvVRKzns3Dux03zuOoDVLQ&usqp=CAU")
+        e.set_footer(text="god i wanna die")
+        author = message.author
+        if message.author.bot:
+            return  # ignore all bots
+        content = message.content.casefold()
+        if "dream" in content:
+            await message.reply(embed=e)
+        if 'https://tenor.com/view/skill-issue-gif-21913959' in content:
+            await message.delete()
+            await message.channel.send(f'{message.author.mention}, skill issue? You gotta virginity issue my guy')
+        if 'skill issue' in content:
+            await message.reply(f'This just in! {message.author.mention} is a MASSIVE virgin!')
+
+
+
+
     #     # if "pog" in content:
     #     #     await message.add_reaction("<:cringe:800461449968353290>")
     #     # if "trials" in content:
@@ -45,6 +56,11 @@ class OnMessCog(commands.Cog):
     #         await author.send("https://youtu.be/spi6yOS6zy4")
     #     # if "beans" in content:
     #     #     await message.reply("https://imgur.com/ChjcrdM")
+
+
+
+
+
 
 
 
