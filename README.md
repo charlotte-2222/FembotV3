@@ -17,14 +17,12 @@ This Bot is developed solely for the client, however all parties are welcome to 
 - Various animals can be webscraped
 - Welcomes new members
 - Collect usernames/ID's -> Write to .txt
-- Polling, Giveaways, Announcements - many other commands.
-
 <h3>APIs and Fun Stuff</h3>
 
 - Neko API
 - PRAW scrapping Reddit
 - Imgur
 - Weather API
-- *NEW* - Added music player voice_client support!
+- Music Player Support! *(Despite the C&D's w/ Rhythm & Groovy)*
 
 <h3 align ='center'>Please check out the <a href='https://github.com/charlotte-2222/FembotV3/wiki'>wiki</a> for complete information <br> & <br> Details on what Fembot has to offer!</h3>
