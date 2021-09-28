@@ -3,8 +3,6 @@ import random
 from datetime import datetime
 import time
 
-import PySimpleGUI as sg
-
 import discord
 from discord.ext import tasks, commands
 
@@ -15,32 +13,12 @@ class EventsCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("FemBot online\n")
+        print("Fembot online\n")
         print(f"Logged in as {self.bot.user} - {self.bot.user.id}\n")
         print("--------------")
         print(time.strftime(f"Time at start:\n"
                             "%H:%M:%S\n"
                             "%m/%d/%Y\n"))
-
-        # layout = [[sg.Text(f'User: {self.bot.user}')],
-        #           [sg.Text(f'Bot: {self.bot.user.id}')],
-        #           [sg.Text(time.strftime(f'Time: %H:%M:%S'))],
-        #           [sg.Text(time.strftime(f'Date: %m/%d/%Y'))],
-        #           [sg.Button("Close")]]
-        #
-        # # Create the window
-        # window = sg.Window("Fembot", layout, margins=(200, 200)).read()
-        #
-        # # Create an event loop
-        # # while True:
-        # #     event, values = window.read()
-        # #     # End program if user closes window or
-        # #     # presses the OK button
-        # #     if event == "Close" or event == sg.WIN_CLOSED:
-        # #         break
-        # #
-        # # window.close()
-
 
         while True:
             await self.bot.change_presence(
@@ -49,34 +27,34 @@ class EventsCog(commands.Cog):
             await self.bot.change_presence(status=discord.Status.online, activity=discord.Game('with code'))
             await asyncio.sleep(45)
             await self.bot.change_presence(
-                 activity=discord.Activity(type=discord.ActivityType.watching, name="for bugs..."))
+                activity=discord.Activity(type=discord.ActivityType.watching, name="for bugs..."))
             await asyncio.sleep(45)
             await self.bot.change_presence(
-                 activity=discord.Activity(type=discord.ActivityType.streaming, name="now with music!"))
+                activity=discord.Activity(type=discord.ActivityType.streaming, name="now with music!"))
             await asyncio.sleep(45)
             await self.bot.change_presence(status=discord.Status.online,
-                                            activity=discord.Game("on the Minecraft server!"))
+                                           activity=discord.Game("on the Minecraft server!"))
             await asyncio.sleep(45)
 
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
-        a=['A champion has appeared!',
-           'Welcome to the club...',
-           'The Eggs Have Expected You',
-           'Ah yes, finally',
-           "wait...you're here?",
-           'oh no, more weirdos',
-           'Prepare for cringe',
-           "Make yourself at home",
-           "Welcome! Don't lick the floor",
-           "eeeeeeee",
-           "~insect-like chattering~",
-           "But what of the droid attack on the wookies?",
-           "Do you have pizza?",
-           "This is not a Wendy's",
-           "If you're looking for Femboys, ohhh boi~",
-           "~insert heartwarming welcome message here~"]
-        b=random.choice(a)
+        a = ['A champion has appeared!',
+             'Welcome to the club...',
+             'The Eggs Have Expected You',
+             'Ah yes, finally',
+             "wait...you're here?",
+             'oh no, more weirdos',
+             'Prepare for cringe',
+             "Make yourself at home",
+             "Welcome! Don't lick the floor",
+             "eeeeeeee",
+             "~insect-like chattering~",
+             "But what of the droid attack on the wookies?",
+             "Do you have pizza?",
+             "This is not a Wendy's",
+             "If you're looking for Femboys, ohhh boi~",
+             "~insert heartwarming welcome message here~"]
+        b = random.choice(a)
         if member.bot:
             return  # ignore all bots
         print("\n--------------\n")

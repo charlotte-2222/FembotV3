@@ -65,7 +65,7 @@ class NekosCog(commands.Cog):
         await ctx.message.delete()
 
     # YURI
-    @commands.command(help="I don't actually know what a yuri is, but this is that")
+    @commands.command(help="I'm pretty sure this is a fancy term for 'Lesbian Porn'")
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def yuri(self, ctx):
         if not ctx.channel.is_nsfw():
@@ -147,7 +147,7 @@ class NekosCog(commands.Cog):
         await ctx.send(embed=embed)
         await ctx.message.delete()
 
-    @commands.command(help="Elmers")
+    @commands.command(help="This isn't cum, it's actually Elmers Glue.")
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def cum(self, ctx):
         if not ctx.channel.is_nsfw():
@@ -228,7 +228,6 @@ class NekosCog(commands.Cog):
     @commands.command(help="just hentai")
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def hentai(self, ctx):
-        global embed
         if not ctx.channel.is_nsfw():
             author = ctx.message.author
             await ctx.author.send("```not an nsfw channel```")
@@ -331,7 +330,7 @@ class NekosCog(commands.Cog):
             sys.stderr = object
         if ctx.channel.is_nsfw():
             embed = discord.Embed(
-                title=' :flushed:',
+                title=':flushed:',
                 description='',
                 colour=discord.Colour.magenta()
             )
@@ -378,17 +377,22 @@ class NekosCog(commands.Cog):
                       pass_context=True)
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def spank(self, ctx, member: discord.Member, *, reason=""):
-        embed = discord.Embed(
-                title=f"{ctx.message.author} spanked {member.name} {reason}",
-                description='',
-                colour=discord.Colour.magenta()
-            )
-        spank = nekos.img("spank")
+        if not ctx.channel.is_nsfw():
+            author = ctx.message.author
+            await ctx.author.send("```not an nsfw channel```")
+            sys.stderr = object
+        if ctx.channel.is_nsfw():
+            embed = discord.Embed(
+                    title=f"{ctx.message.author} spanked {member.name} {reason}",
+                    description='',
+                    colour=discord.Colour.magenta()
+                )
+            spank = nekos.img("spank")
 
-        embed.set_image(url=spank)
+            embed.set_image(url=spank)
 
-        await ctx.send(embed=embed)
-        await ctx.message.delete()
+            await ctx.send(embed=embed)
+            await ctx.message.delete()
 
     @commands.command(help="Cuddle your homie",
                       pass_context=True)
@@ -422,22 +426,27 @@ class NekosCog(commands.Cog):
         await ctx.send(embed=embed)
         await ctx.message.delete()
 
-    @commands.command(help="Furries are gross")
+    @commands.command(help="It's a fox girl, you furry")
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def fox_girl(self, ctx):
-        embed = discord.Embed(
-            title=' :flushed:',
-            description='',
-            colour=discord.Colour.magenta()
-        )
-        fox_girl = nekos.img("fox_girl")
+        if not ctx.channel.is_nsfw():
+            author = ctx.message.author
+            await ctx.author.send("```not an nsfw channel```")
+            sys.stderr = object
+        if ctx.channel.is_nsfw():
+            embed = discord.Embed(
+                title=':flushed:',
+                description='',
+                colour=discord.Colour.magenta()
+            )
+            fox_girl = nekos.img("fox_girl")
 
-        embed.set_image(url=fox_girl)
+            embed.set_image(url=fox_girl)
 
-        await ctx.send(embed=embed)
-        await ctx.message.delete()
+            await ctx.send(embed=embed)
+            await ctx.message.delete()
 
-    @commands.command(help="Furries are gross")
+    @commands.command(help="Well... it's a NekosLife ")
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def neko(self, ctx):
         if not ctx.channel.is_nsfw():
@@ -446,7 +455,7 @@ class NekosCog(commands.Cog):
             sys.stderr = object
         if ctx.channel.is_nsfw():
             embed = discord.Embed(
-                title=' nekos:flushed:',
+                title=' nekos | :flushed:',
                 description='',
                 colour=discord.Colour.magenta()
             )
@@ -552,7 +561,7 @@ class NekosCog(commands.Cog):
         await ctx.send(embed=embed)
         await ctx.message.delete()
 
-    @commands.command(help="idk what this is")
+    @commands.command(help="You're feeding a user")
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def feed(self, ctx, member: discord.Member):
         # if not ctx.channel.is_nsfw():
@@ -570,7 +579,7 @@ class NekosCog(commands.Cog):
         await ctx.send(embed=embed)
         await ctx.message.delete()
 
-    @commands.command(help="idk what this is but its  here")
+    @commands.command(help="Kuni is to eat another out")
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def kuni(self, ctx):
         if not ctx.channel.is_nsfw():
@@ -589,11 +598,11 @@ class NekosCog(commands.Cog):
         await ctx.send(embed=embed)
         await ctx.message.delete()
 
-    @commands.command(help="fact?")
+    @commands.command(help="random fact")
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def fact(self, ctx):
         embed = discord.Embed(
-                title='also dunno what this is :flushed:',
+                title='Random Fact from NekosLife',
                 description='',
                 colour=discord.Colour.magenta()
         )
@@ -602,7 +611,7 @@ class NekosCog(commands.Cog):
         await ctx.send(embed=embed)
         await ctx.message.delete()
 
-    @commands.command(help="idk what this is but its  here")
+    @commands.command(help="Holoero | Fox girl")
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def holoero(self, ctx):
         if not ctx.channel.is_nsfw():
@@ -611,12 +620,30 @@ class NekosCog(commands.Cog):
             sys.stderr = object
         if ctx.channel.is_nsfw():
             embed = discord.Embed(
-                title=f'heres whatever this is',
+                title=f'Holoero uwu',
                 description='',
                 colour=discord.Colour.magenta()
             )
         holoero = nekos.img("holoero")
         embed.set_image(url=holoero)
+        await ctx.send(embed=embed)
+        await ctx.message.delete()
+
+    @commands.command(help="Woof | Dog Girl")
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    async def woof(self, ctx):
+        if not ctx.channel.is_nsfw():
+            author = ctx.message.author
+            await ctx.author.send("```not an nsfw channel```")
+            sys.stderr = object
+        if ctx.channel.is_nsfw():
+            embed = discord.Embed(
+                title=f'Woof uwu',
+                description='',
+                colour=discord.Colour.magenta()
+            )
+        woof = nekos.img("woof")
+        embed.set_image(url=woof)
         await ctx.send(embed=embed)
         await ctx.message.delete()
 

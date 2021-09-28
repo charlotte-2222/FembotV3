@@ -49,6 +49,8 @@ class OwnerCog(commands.Cog, command_attrs=dict(hidden=True)):
         else:
             await ctx.send('**`SUCCESS`**')
 
+    """Extra commands below"""
+
     @commands.command()
     @commands.is_owner()
     async def _shit_(self, ctx):

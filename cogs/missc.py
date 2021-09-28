@@ -30,7 +30,7 @@ class Misc(commands.Cog):
     #         await ctx.author.send(f"You reported {user}\nReason for report for: {rearray}")
     #         await ctx.message.delete()
 
-    @commands.command(help="This command will which staff member is online, and their online status.",
+    @commands.command(help="This command will return which staff member is online, and their online status.",
                       pass_context=True,
                       aliases=['helpers'])
     async def staff(self, ctx):

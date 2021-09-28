@@ -337,7 +337,7 @@ class Fun(commands.Cog):
 
         e = discord.Embed(
             title="let's see the gay power level...",
-            description=f"{user} {random.randint(0, 100)}% gay 🌈",
+            description=f"{user} {random.randint(-100, 100)}% gay 🌈",
             color=discord.Color.random(),
         )
         await ctx.send(embed=e)
@@ -358,6 +358,26 @@ class Fun(commands.Cog):
         else:
             await ctx.message.delete()
             await ctx.send(emoji.url)
+
+    @commands.command()
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    async def marry(self, ctx, member: discord.Member = None):
+        """random marriage command"""
+        user = member.name + " will now" if member else "You are going to"
+        count = len(open('text_dir/thiccNames.txt').readlines())
+        with open('text_dir/thiccNames.txt', 'w')as f:
+            for member in ctx.guild.members:
+                try:
+                    print(f'{member.name}', file=f)
+                except:
+                    print(f"Unable to write an ID... continuing")
+                    continue
+        print(f"done printing names\nCount: {count}")
+        thicc = open('text_dir/thiccNames.txt').read().splitlines()
+        thiccy = random.choice(thicc)
+        e=discord.Embed(title=f"🎉 {user} marry {thiccy}! 🎉",
+                        colour=discord.Color.random())
+        await ctx.message.reply(embed=e)
 
 
 def setup(bot):

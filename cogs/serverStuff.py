@@ -45,94 +45,6 @@ class Server(commands.Cog, command_attrs=dict(hidden=True)):
         await ctx.message.reply(f"The new daily thicc will be: {thiccy}", mention_author=True)
         await channel.edit(name=f"Thicc: {thiccy}")
 
-    @commands.command(help="Create an awesome giveaway",
-                      aliases=["gift", "giveaway", "gcreate", "gcr", "giftcr"],
-                      pass_context=True)
-    @commands.has_guild_permissions(manage_roles=True)
-    async def create_giveaway(self, ctx):
-        embed = discord.Embed(title="Giveaway! <:9154_PogU:712671828291747864>",
-                              description="Time for a new Giveaway. Answer the following questions in 25 seconds each for the Giveaway",
-                              color=discord.Color.magenta())
-        await ctx.send(embed=embed)
-        questions = ["What channel would you like to hows the giveaway?",
-                     "How long will the giveaway last?\nType a number followed by the time\n `(s | m | h | d )`\n\n"
-                     "`15m` = fifteen minutes",
-                     "What is the Prize?"]
-        answers = []
-
-        # Check Author
-        def check(m):
-            return m.author == ctx.author and m.channel == ctx.channel
-
-        for i, question in enumerate(questions):
-            embed = discord.Embed(title=f"Question {i}",
-                                  description=question,
-                                  color=discord.Color.magenta())
-            await ctx.send(embed=embed)
-            try:
-                message = await self.bot('self', timeout=25, check=check)
-            except TimeoutError:
-                await ctx.send("You didn't answer the questions in Time")
-                return
-            answers.append(message.content)
-        # Check if Channel Id is valid
-        try:
-            channel_id = int(answers[0][2:-1])
-        except:
-            await ctx.send(f"The Channel provided was wrong. The channel should be {ctx.channel.mention}")
-            return
-
-        channel = self.bot(channel_id)
-        time = convert(answers[1])
-        # Check if Time is valid
-        if time == -1:
-            await ctx.send("The Time format was wrong")
-            return
-        elif time == -2:
-            await ctx.send("The Time was not conventional number")
-            return
-        prize = answers[2]
-
-        await ctx.send(f"Your giveaway will be hosted in {channel.mention} and will last for {answers[1]}")
-        embed = discord.Embed(title="Come one, come all!!!",
-                              description=f"You could win: {prize}",
-                              colour=discord.Color.magenta())
-        embed.add_field(name="Hosted By: ", value=ctx.author.mention)
-        embed.set_footer(text=f"Giveway ends in {answers[1]} from now")
-        newMsg = await channel.send(embed=embed)
-        await newMsg.add_reaction("<:thicc:775003570733842453>")
-        # Check if Giveaway Cancelled
-        self.cancelled = False
-        await sleep(time)
-        if not self.cancelled:
-            myMsg = await channel.fetch_message(newMsg.id)
-
-            users = await myMsg.reactions[0].users().flatten()
-            users.pop(users.index(self.bot))
-            # Check if User list is not empty
-            if len(users) <= 0:
-                emptyEmbed = discord.Embed(title="wait.... what?",
-                                           description=f"You coulda won: {prize}", colour=discord.Colour.magenta())
-                emptyEmbed.add_field(name="Hosted By:", value=ctx.author.mention)
-                emptyEmbed.set_footer(
-                    text="No one won the Giveaway...."
-
-                )
-                await myMsg.edit(embed=emptyEmbed)
-                return
-            if len(users) > 0:
-                winner = random.choice(users)
-                winnerEmbed = discord.Embed(title="Woooo hooo!",
-                                            colour=discord.Color.magenta(),
-                                            timestamp=datetime.utcnow())
-                winnerEmbed.add_field(name=f"Congratulations {winner}, "
-                                           f"you're the proud owner of: {prize}", value=winner.mention)
-                winnerEmbed.set_image(
-                    url="https://i.imgur.com/ok4Xuw4.jpg")
-                await myMsg.edit(embed=winnerEmbed)
-                return
-
-
     @commands.command(help="Get the weather for a city `^weather [city]`",
                       aliases=["wt"], hidden=False)
     async def weather(self, ctx, city: str = False):
@@ -274,37 +186,46 @@ class Server(commands.Cog, command_attrs=dict(hidden=True)):
                                'mc_ping'],
                       hidden=False,
                       description="Pinging the RAD server for uptime / Availabilitity")
+    # async def ping_mc_server(self, ctx):
+    #     try:
+    #         server = MinecraftServer(str("rad.craftersland.net"), port=25565)
+    #         status = server.status()
+    #         online = status.players.online
+    #         max_players = status.players.max
+    #         ping = round(status.latency)
+    #         version = status.raw['version']['name']
+    #         up = discord.Embed(title="`RAD 1 | Craftersland`",
+    #                            description=f"Response time: {ping}\n"
+    #                                        f"Online: :white_check_mark:\n"
+    #                                        f"Version: {version}\n"
+    #                                        f"Max Players: {max_players}",
+    #                            colour=discord.Colour.green(),
+    #                            timestamp=datetime.utcnow()
+    #                            )
+    #         up.add_field(name="Players Online Now", value=f"{online}\n")
+    #         await ctx.send(embed=up)
+    #     except (ConnectionRefusedError,
+    #             OSError
+    #             ) as e:
+    #         offline = discord.Embed(
+    #             title=":exclamation: The Server is offline :exclamation:",
+    #             description="Sorry kids, the server is currently unavailable. "
+    #                         "Check back later. It's possible that the server is either under maintenance,"
+    #                         "or has briefly undergone a reset. Thank you for understanding.",
+    #             colour=discord.Color.red(),
+    #             timestamp=datetime.utcnow()
+    #         )
+    #         offline.add_field(name="Error:", value=f"{e}")
+    #         await ctx.send(embed=offline)
+
     async def ping_mc_server(self, ctx):
-        try:
-            server = MinecraftServer(str("rad.craftersland.net"), port=25565)
-            status = server.status()
-            online = status.players.online
-            max_players = status.players.max
-            ping = round(status.latency)
-            version = status.raw['version']['name']
-            up = discord.Embed(title="`RAD 1 | Craftersland`",
-                               description=f"Response time: {ping}\n"
-                                           f"Online: :white_check_mark:\n"
-                                           f"Version: {version}\n"
-                                           f"Max Players: {max_players}",
-                               colour=discord.Colour.green(),
-                               timestamp=datetime.utcnow()
-                               )
-            up.add_field(name="Players Online Now", value=f"{online}\n")
-            await ctx.send(embed=up)
-        except (ConnectionRefusedError,
-                OSError
-                ) as e:
-            offline = discord.Embed(
-                title=":exclamation: The Server is offline :exclamation:",
-                description="Sorry kids, the server is currently unavailable. "
-                            "Check back later. It's possible that the server is either under maintenance,"
-                            "or has briefly undergone a reset. Thank you for understanding.",
-                colour=discord.Color.red(),
-                timestamp=datetime.utcnow()
-            )
-            offline.add_field(name="Error:", value=f"{e}")
-            await ctx.send(embed=offline)
+        e = discord.Embed(
+            title='~ Deprecated Command! ~',
+            description='tl;dr\nMany servers have come and gone, we no longer have one.\n'
+                        'Contact an admin if you want more info or wish to host one.',
+            timestamp=datetime.utcnow()
+        )
+        await ctx.send(embed=e)
 
     @commands.command()
     async def info(self, ctx, *, user: Union[discord.Member, discord.User] = None):
@@ -325,7 +246,7 @@ class Server(commands.Cog, command_attrs=dict(hidden=True)):
         e.add_field(name='Joined', value=format_date(getattr(user, 'joined_at', None)), inline=False)
         e.add_field(name='Created', value=format_date(user.created_at), inline=False)
         if roles:
-            e.add_field(name='Roles', value=', '.join(roles) if len(roles) < 10 else f'{len(roles)} roles',
+            e.add_field(name='Roles', value='\n '.join(roles) if len(roles) < 10 else f'{len(roles)} roles',
                         inline=False)
 
         voice = getattr(user, 'voice', None)
@@ -354,10 +275,11 @@ class Server(commands.Cog, command_attrs=dict(hidden=True)):
             title="<:6876_BlobCatLove:708017303798939792> | Hi, i'm Fembot!",
             description="I'm <@384459643545583627> personal server bot, "
                         "she coded me using Python, "
-                        "and even self-hosts me.",
+                        "and even self-hosts me."
+                        "\n\n\thttps://github.com/charlotte-2222/FembotV3/wiki",
             colour=discord.Colour.magenta()
         )
-        e.set_image(url="https://i.imgur.com/F72Lc77.png")
+        e.set_image(url=self.bot.user.avatar_url)
         await ctx.send(embed=e)
         await ctx.message.delete()
 
