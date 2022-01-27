@@ -1,4 +1,3 @@
-from datetime import datetime
 import random
 from imgurpython import ImgurClient
 
@@ -10,36 +9,13 @@ from discord.ext import commands
 import nekos
 import sys
 
-imgur = ImgurClient(imgurC, ImgurL)
+
+# imgur = ImgurClient(imgurC, ImgurL)
 
 
 class NekosCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-    @commands.command(help="Shaxx porn")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def shaxx(self, ctx):
-        try:
-            author = ctx.message.author
-            if not ctx.channel.is_nsfw():
-                await ctx.author.send("```not an nsfw channel```")
-                sys.stderr = object
-        except:
-            print('exception unhandled')
-        if ctx.channel.is_nsfw():
-            r = requests.get(f"https://api.imgur.com/3/album/OVCCqqa/images?client_id={imgurC}").json()
-            em = discord.Embed(title="uwu shaxxy-waxxie's thicc cock")
-            indexmax = len(r['data']) - 1
-            size = random.randrange(0, indexmax, 1)
-            em.set_image(url=str(r['data'][size]['link']))
-            em.color = discord.Color.magenta()
-        try:
-            await ctx.send(embed=em)
-            await ctx.message.delete()
-            print(f"{ctx.author} is asking for shaxx porn")
-        except:
-            await ctx.send(str(r['data'][size]['link']))
 
     @commands.command(help="Foot hentai")
     @commands.cooldown(1, 3, commands.BucketType.user)
@@ -84,7 +60,6 @@ class NekosCog(commands.Cog):
 
         await ctx.send(embed=embed)
         await ctx.message.delete()
-
 
     @commands.command(help="Femboy porn")
     @commands.cooldown(1, 2, commands.BucketType.user)
@@ -383,10 +358,10 @@ class NekosCog(commands.Cog):
             sys.stderr = object
         if ctx.channel.is_nsfw():
             embed = discord.Embed(
-                    title=f"{ctx.message.author} spanked {member.name} {reason}",
-                    description='',
-                    colour=discord.Colour.magenta()
-                )
+                title=f"{ctx.message.author} spanked {member.name} {reason}",
+                description='',
+                colour=discord.Colour.magenta()
+            )
             spank = nekos.img("spank")
 
             embed.set_image(url=spank)
@@ -569,9 +544,9 @@ class NekosCog(commands.Cog):
         #     await ctx.author.send("```not an nsfw channel```")
         #     sys.stderr = object
         embed = discord.Embed(
-                title=f"{ctx.author.name} fed {member.name} like widdle baby uwu",
-                description='',
-                colour=discord.Colour.magenta()
+            title=f"{ctx.author.name} fed {member.name} like widdle baby uwu",
+            description='',
+            colour=discord.Colour.magenta()
         )
         feed = nekos.img("feed")
         embed.set_image(url=feed)
@@ -588,9 +563,9 @@ class NekosCog(commands.Cog):
             sys.stderr = object
         if ctx.channel.is_nsfw():
             embed = discord.Embed(
-                    title=f'lemme eat you out, {ctx.author.name}!',
-                    description='',
-                    colour=discord.Colour.magenta()
+                title=f'lemme eat you out, {ctx.author.name}!',
+                description='',
+                colour=discord.Colour.magenta()
             )
         kuni = nekos.img("kuni")
         embed.set_image(url=kuni)
@@ -602,9 +577,9 @@ class NekosCog(commands.Cog):
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def fact(self, ctx):
         embed = discord.Embed(
-                title='Random Fact from NekosLife',
-                description='',
-                colour=discord.Colour.magenta()
+            title='Random Fact from NekosLife',
+            description='',
+            colour=discord.Colour.magenta()
         )
         fact = nekos.img("/fact")
         embed.set_image(url=fact)

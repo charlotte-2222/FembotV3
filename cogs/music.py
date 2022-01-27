@@ -28,7 +28,10 @@ ytdlopts = {
     'quiet': True,
     'no_warnings': True,
     'default_search': 'auto',
-    'source_address': '0.0.0.0'  # ipv6 addresses cause issues sometimes
+    'source_address': '0.0.0.0',  # ipv6 addresses cause issues sometimes
+    'username': 'ayy.charlotte@gmail.com',
+    'password': 'MJKILP9780%%%777z',
+    'videopassword': 'MJKILP9780%%%777z'
 }
 
 ffmpegopts = {
@@ -50,11 +53,13 @@ class InvalidVoiceChannel(VoiceConnectionError):
 
 
 class YTDLSource(discord.PCMVolumeTransformer):
+    username = 'ayy.charlotte@gmail.com'
+    password = 'MJKILP9780%%%777z'
+    videopassword = 'MJKILP9780%%%777z'
 
     def __init__(self, source, *, data, requester):
         super().__init__(source)
         self.requester = requester
-
         self.title = data.get('title')
         self.web_url = data.get('webpage_url')
 
@@ -78,7 +83,9 @@ class YTDLSource(discord.PCMVolumeTransformer):
             # take first item from a playlist
             data = data['entries'][0]
 
+
         await ctx.send(f'```ini\n[Added {data["title"]} to the Queue.]\n```', delete_after=15)
+
         if download:
             source = ytdl.prepare_filename(data)
         else:
@@ -105,7 +112,6 @@ class MusicPlayer:
     simultaneously.
     When the bot disconnects from the Voice it's instance will be destroyed.
     """
-
     __slots__ = ('bot', '_guild', '_channel', '_cog', 'queue', 'next', 'current', 'np', 'volume', 'shuffle', 'repeat')
 
     def __init__(self, ctx):

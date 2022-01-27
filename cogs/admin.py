@@ -37,7 +37,7 @@ class AdminCog(commands.Cog, command_attrs=dict(hidden=True)):
             embed = discord.Embed(title=f":skull_crossbones: A member was kicked :skull_crossbones:",
                                   description=f"Member: {member}",
                                   timestamp=datetime.utcnow(),
-                                    colour=discord.Color.magenta())
+                                  colour=discord.Color.magenta())
             embed.set_thumbnail(url=member.avatar_url)
             await log.send(embed=embed)
             await ctx.reply(f'{member.mention} is on the receiving end of "mod abuse" lmao')
@@ -115,7 +115,7 @@ class AdminCog(commands.Cog, command_attrs=dict(hidden=True)):
 
     @commands.command(help="Create warnings against members",
                       aliases=["warn", "slap", "whip"], pass_context=True)
-    @commands.has_guild_permissions(kick_members=True)
+    @commands.has_guild_permissions()
     async def warn_create(self, ctx, member: discord.Member, *args):
         log = self.bot.get_channel(843568644373741598)
         reason = " ".join(args)
@@ -125,7 +125,7 @@ class AdminCog(commands.Cog, command_attrs=dict(hidden=True)):
         embed.add_field(name="Reason:", value=reason)
         await log.send(embed=embed)
         await ctx.message.delete()
-        await member.send(f"You were warned by **{ctx.message.author}**!\nReason: {reason}")
+        await member.send(f"You were warned in the **{ctx.guild} server!**\nReason: {reason}")
 
     @commands.command(aliases=["sm", "slowmo"])
     @commands.has_permissions(administrator=True)

@@ -1,8 +1,8 @@
 import asyncio
 import random
 from datetime import datetime
-from utilityFunction.convert import *
 import discord
+from discord import guild
 from discord.ext import commands
 
 
@@ -12,8 +12,6 @@ class OnMessCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-
-        EMOJI_REGEX = re.compile(r"(<(a)?:[a-zA-Z0-9\_]+:([0-9]+)>)")
 
         dream_peen = open('text_dir/dream.txt').read().splitlines()
         e = discord.Embed(title=random.choice(dream_peen),
@@ -33,42 +31,32 @@ class OnMessCog(commands.Cog):
             await message.reply(f'This just in! {message.author.mention} is a MASSIVE virgin!')
         if "fuck you fembot" in content:
             await message.reply(f"fuck you {message.author.mention}")
-
-        if message.channel.id == 886621065554575413:
-            if content.startswith(':'):
-                await message.reply('Thanks!')
-                pass
-            elif content is message.attachments:
-                await message.reply('Thanks!')
-                pass
-            elif not content.startswith(':'):
-                await asyncio.sleep(1)
-                await message.delete()
-
-    #if "trials" in content:
-       # await message.add_reaction("<:no:795350056151941120>")
-    #     # if "pog" in content:
-    #     #     await message.add_reaction("<:cringe:800461449968353290>")
-    #     if "fuck you fembot" in content:
-    #         await message.reply(f"fuck you {message.author.mention}")
-    #     if "good morning" in content:
-    #         await message.reply(random.choice(morning))
-    #     if "goodnight" in content:
-    #         await message.channel.send(random.choice(goodnight))
-    #     # if "nerd" in content:
-    #     #     await message.reply(file=myfile)
-    #     #     await message.reply("nErD. Get fucked dumbass.")
-    #     if "god is dead" in content:
-    #         await message.reply(embed=dg)
-    #     if "christian minecraft server" in content:
-    #         await message.reply("Wait i gotta meme for this")
-    #         await asyncio.sleep(1)
-    #         await author.send("https://youtu.be/spi6yOS6zy4")
-    #     # if "beans" in content:
-    #     #     await message.reply("https://imgur.com/ChjcrdM")
+        if "catalyst" in content:
+            feesh=self.bot.get_user(549292136147845140)
+            #await message.reply(f"Oh no! <@!549292136147845140> didn't tell you that was a bad word..."
+                               # f"\nI'll make sure to DM her so that this is cleared up... :)")
+            await feesh.send('Feeesh! You should tell people not to say your ***slur!***')
 
 
-"""got dem beans"""
+        with open('text_dir/badwords.txt', 'r') as f:
+            words = f.read()
+            badwords = words.splitlines()
+            for word in badwords:
+                if word in content:
+                    try:
+                        await message.delete()
+                        await asyncio.sleep(1)
+                        await message.channel.send(
+                            f"Woah! {message.author.mention}, you just said a bad word!"
+                            f"\n You can't do that :(\n")
+                        await asyncio.sleep(1)
+                        await author.send(f"Word you said: {word}....\n"
+                                          f"**Our ToS:** https://bit.ly/BreakfastTOS")
+                        print(f"{message.author} said {word} in {message.channel}")
+                    except:
+                        print('Did not warn/delete a badword --- moving on')
+                else:
+                    continue
 
 
 def setup(bot):

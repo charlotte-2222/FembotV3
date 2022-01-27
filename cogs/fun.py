@@ -1,4 +1,5 @@
 import asyncio
+import time
 from typing import Union
 
 import aiohttp
@@ -12,7 +13,7 @@ from utilityFunction import lists
 from utilityFunction.CommandFunc import *
 from datetime import datetime
 
-imgur = ImgurClient(imgurC, ImgurL)
+# imgur = ImgurClient(imgurC, ImgurL)
 
 
 class Fun(commands.Cog):
@@ -20,17 +21,25 @@ class Fun(commands.Cog):
         self.bot = bot
 
     @commands.command(help="Measure your friend's dick",
-                     aliases=["dick", "penis"],
+                      aliases=["dick", "penis"],
                       pass_context=True)
-    async def dong(self, ctx, user: discord.Member = None):
+    async def dong(self, ctx, user:discord.Member = None):
         """Detects user's dong length"""
         mem = user or ctx.author
         state = random.getstate()
         random.seed(mem)
         dong = "8{}D".format("=" * random.randint(0, 30))
         random.setstate(state)
-        em = discord.Embed(title="{}'s Dong Size".format(mem), description="Size: " + dong,
-                           colour=discord.Colour.magenta())
+        girth = random.randint(1, 10)
+        girth_cm = 2.54 * girth
+        em = discord.Embed(title="How big is your dong?",
+                           description='\n',
+                           colour=discord.Colour.random())
+        em.add_field(name="{}'s Dong Size".format(mem), value="Size: " + dong)
+        em.add_field(name="Girth:",
+                     value=f"**{girth} inches**\n"
+                           f"And for you bastards that use centimeters:\n **{girth_cm} Centimeters**",
+                     inline=False)
         await ctx.send(embed=em)
 
     @commands.command(aliases=['roll'])
@@ -123,92 +132,92 @@ class Fun(commands.Cog):
         embed.set_footer(text="")
         await ctx.send(embed=embed)
 
-    @commands.command(help="Find a random dog"
-        , pass_context=True)
-    @commands.cooldown(1, 3, commands.BucketType.user)
-    async def dog(self, ctx):
-        r = requests.get(f"https://api.imgur.com/3/gallery/vgW1p/images?client_id={imgurC}").json()
-        try:
-            em = discord.Embed(title="The goodest of bois")
-            indexmax = len(r['data']) - 1
-            size = random.randrange(0, indexmax, 1)
-            em.set_image(url=str(r['data'][size]['link']))
-            em.color = discord.Color.magenta()
-            await ctx.send(embed=em)
-            await ctx.message.delete()
-        except:
-            await ctx.send(str(r['data'][size]['link']))
-
-    @commands.command(help="Find a random bird",
-                      aliases=["bird"],
-                      pass_context=True)
-    @commands.cooldown(1, 3, commands.BucketType.user)
-    async def birb(self, ctx):
-        r = requests.get(f"https://api.imgur.com/3/gallery/QWmIV/images?client_id={imgurC}").json()
-        em = discord.Embed(title="birb")
-        indexmax = len(r['data']) - 1
-        size = random.randrange(0, indexmax, 1)
-        em.set_image(url=str(r['data'][size]['link']))
-        em.color = discord.Color.magenta()
-        try:
-            await ctx.send(embed=em)
-            await ctx.message.delete()
-        except:
-            await ctx.send(str(r['data'][size]['link']))
-
-    @commands.command(help="Find a random otter",
-                      pass_context=True)
-    @commands.cooldown(1, 3, commands.BucketType.user)
-    async def otter(self, ctx):
-        r = requests.get(f"https://api.imgur.com/3/gallery/BZA8d/images?client_id={imgurC}").json()
-        em = discord.Embed(title="Otters :D")
-        indexmax = len(r['data']) - 1
-        size = random.randrange(0, indexmax, 1)
-        em.set_image(url=str(r['data'][size]['link']))
-        em.color = discord.Color.magenta()
-        try:
-            await ctx.send(embed=em)
-            await ctx.message.delete()
-        except:
-            await ctx.send(str(r['data'][size]['link']))
-
-    @commands.command(help="Find a random platapuss",
-                      aliases=["platapussy",
-                               "platty",
-                               "platt",
-                               "plt"],
-                      pass_context=True)
-    @commands.cooldown(1, 3, commands.BucketType.user)
-    async def plat(self, ctx):
-        r = requests.get(f"https://api.imgur.com/3/album/kWZ6JNv/images?client_id={imgurC}").json()
-        em = discord.Embed(title="Platypussssss!!!!!! :D")
-        indexmax = len(r['data']) - 1
-        size = random.randrange(0, indexmax, 1)
-        em.set_image(url=str(r['data'][size]['link']))
-        em.color = discord.Color.magenta()
-        try:
-            await ctx.send(embed=em)
-            await ctx.message.delete()
-        except:
-            await ctx.send(str(r['data'][size]['link']))
-
-    @commands.command(help="Find some random buns",
-                      aliases=["rabbit",
-                               "bunny"],
-                      pass_context=True)
-    @commands.cooldown(1, 3, commands.BucketType.user)
-    async def bun(self, ctx):
-        r = requests.get(f"https://api.imgur.com/3/gallery/FQsx8/images?client_id={imgurC}").json()
-        em = discord.Embed(title="buns :D")
-        indexmax = len(r['data']) - 1
-        size = random.randrange(0, indexmax, 1)
-        em.set_image(url=str(r['data'][size]['link']))
-        em.color = discord.Color.magenta()
-        try:
-            await ctx.send(embed=em)
-            await ctx.message.delete()
-        except:
-            await ctx.send(str(r['data'][size]['link']))
+    # @commands.command(help="Find a random dog"
+    #     , pass_context=True)
+    # @commands.cooldown(1, 3, commands.BucketType.user)
+    # async def dog(self, ctx):
+    #     r = requests.get(f"https://api.imgur.com/3/gallery/vgW1p/images?client_id={imgurC}").json()
+    #     try:
+    #         em = discord.Embed(title="The goodest of bois")
+    #         indexmax = len(r['data']) - 1
+    #         size = random.randrange(0, indexmax, 1)
+    #         em.set_image(url=str(r['data'][size]['link']))
+    #         em.color = discord.Color.magenta()
+    #         await ctx.send(embed=em)
+    #         await ctx.message.delete()
+    #     except:
+    #         await ctx.send(str(r['data'][size]['link']))
+    #
+    # @commands.command(help="Find a random bird",
+    #                   aliases=["bird"],
+    #                   pass_context=True)
+    # @commands.cooldown(1, 3, commands.BucketType.user)
+    # async def birb(self, ctx):
+    #     r = requests.get(f"https://api.imgur.com/3/gallery/QWmIV/images?client_id={imgurC}").json()
+    #     em = discord.Embed(title="birb")
+    #     indexmax = len(r['data']) - 1
+    #     size = random.randrange(0, indexmax, 1)
+    #     em.set_image(url=str(r['data'][size]['link']))
+    #     em.color = discord.Color.magenta()
+    #     try:
+    #         await ctx.send(embed=em)
+    #         await ctx.message.delete()
+    #     except:
+    #         await ctx.send(str(r['data'][size]['link']))
+    #
+    # @commands.command(help="Find a random otter",
+    #                   pass_context=True)
+    # @commands.cooldown(1, 3, commands.BucketType.user)
+    # async def otter(self, ctx):
+    #     r = requests.get(f"https://api.imgur.com/3/gallery/BZA8d/images?client_id={imgurC}").json()
+    #     em = discord.Embed(title="Otters :D")
+    #     indexmax = len(r['data']) - 1
+    #     size = random.randrange(0, indexmax, 1)
+    #     em.set_image(url=str(r['data'][size]['link']))
+    #     em.color = discord.Color.magenta()
+    #     try:
+    #         await ctx.send(embed=em)
+    #         await ctx.message.delete()
+    #     except:
+    #         await ctx.send(str(r['data'][size]['link']))
+    #
+    # @commands.command(help="Find a random platapuss",
+    #                   aliases=["platapussy",
+    #                            "platty",
+    #                            "platt",
+    #                            "plt"],
+    #                   pass_context=True)
+    # @commands.cooldown(1, 3, commands.BucketType.user)
+    # async def plat(self, ctx):
+    #     r = requests.get(f"https://api.imgur.com/3/album/kWZ6JNv/images?client_id={imgurC}").json()
+    #     em = discord.Embed(title="Platypussssss!!!!!! :D")
+    #     indexmax = len(r['data']) - 1
+    #     size = random.randrange(0, indexmax, 1)
+    #     em.set_image(url=str(r['data'][size]['link']))
+    #     em.color = discord.Color.magenta()
+    #     try:
+    #         await ctx.send(embed=em)
+    #         await ctx.message.delete()
+    #     except:
+    #         await ctx.send(str(r['data'][size]['link']))
+    #
+    # @commands.command(help="Find some random buns",
+    #                   aliases=["rabbit",
+    #                            "bunny"],
+    #                   pass_context=True)
+    # @commands.cooldown(1, 3, commands.BucketType.user)
+    # async def bun(self, ctx):
+    #     r = requests.get(f"https://api.imgur.com/3/gallery/FQsx8/images?client_id={imgurC}").json()
+    #     em = discord.Embed(title="buns :D")
+    #     indexmax = len(r['data']) - 1
+    #     size = random.randrange(0, indexmax, 1)
+    #     em.set_image(url=str(r['data'][size]['link']))
+    #     em.color = discord.Color.magenta()
+    #     try:
+    #         await ctx.send(embed=em)
+    #         await ctx.message.delete()
+    #     except:
+    #         await ctx.send(str(r['data'][size]['link']))
 
     @commands.command(help="generate a random insult",
                       pass_context=True)
@@ -249,8 +258,8 @@ class Fun(commands.Cog):
     async def history(self, ctx):
         await ctx.message.delete()
         author = ctx.message.author
-        message = await ctx.send(f"Fetching History for {ctx.author.mention}!")
-        await message.delete(delay=6)
+        shit = await ctx.send(f"Fetching History for {ctx.author.mention}!")
+        await shit.delete(delay=6)
         async with aiohttp.ClientSession() as cs:
             async with cs.get('http://numbersapi.com/random/date?json') as r:
                 res = await r.json()
@@ -318,7 +327,7 @@ class Fun(commands.Cog):
             await ctx.send(embed=embed)
             await ctx.message.delete()
 
-        elif member is ctx.message.author:
+        if member is ctx.message.author:
             embed = discord.Embed(
                 title=f"{ctx.message.author} bonked themselves {reason}",
                 description='',
@@ -333,23 +342,19 @@ class Fun(commands.Cog):
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def gayrate(self, ctx, member: discord.Member = None):
         """Rate your gayness or another users gayness. 1-100% is returned"""
+        gay = round(random.uniform(0, 100), 1)
+        str(gay)
         user = member.name + " is" if member else "You are"
-
         e = discord.Embed(
             title="let's see the gay power level...",
-            description=f"{user} {random.randint(-100, 100)}% gay 🌈",
+            description=f"{user} {gay}% gay 🌈",
             color=discord.Color.random(),
         )
+        if gay >= 85:
+            e.set_footer(text="Thats pretty gay lol")
+        if gay <= 25:
+            e.set_footer(text="Thats kinda straight smh")
         await ctx.send(embed=e)
-
-    @commands.command()
-    async def imgsearch(self, ctx, *, term: str):
-        # await ctx.typing
-        t = term.replace(" ", "-")
-        e = discord.Embed(title="Found it...",
-                          colour=discord.Colour.random())
-        e.set_image(url=f'https://source.unsplash.com/1600x900/?{t}')
-        await ctx.reply(embed=e)
 
     @commands.command()
     async def enlarge(self, ctx, emoji: discord.PartialEmoji = None):
@@ -365,7 +370,7 @@ class Fun(commands.Cog):
         """random marriage command"""
         user = member.name + " will now" if member else "You are going to"
         count = len(open('text_dir/thiccNames.txt').readlines())
-        with open('text_dir/thiccNames.txt', 'w')as f:
+        with open('text_dir/thiccNames.txt', 'w') as f:
             for member in ctx.guild.members:
                 try:
                     print(f'{member.name}', file=f)
@@ -375,9 +380,63 @@ class Fun(commands.Cog):
         print(f"done printing names\nCount: {count}")
         thicc = open('text_dir/thiccNames.txt').read().splitlines()
         thiccy = random.choice(thicc)
-        e=discord.Embed(title=f"🎉 {user} marry {thiccy}! 🎉",
-                        colour=discord.Color.random())
+        e = discord.Embed(title=f"🎉 {user} marry {thiccy}! 🎉",
+                          colour=discord.Color.random())
         await ctx.message.reply(embed=e)
+
+    @commands.command(help="Get a counter of phrases uttered over the past 800 messages",
+                      aliases=["phrase",
+                               "wc",
+                               "words",
+                               "pc"],
+                      pass_context=True)
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def word_count(self, ctx, *, word=""):
+        counter = 0
+        async with ctx.channel.typing():
+            try:
+                async for message in ctx.channel.history(limit=800):
+                    if word.casefold() == message.author.bot:
+                        return
+                    elif word.casefold() in message.content:
+                        counter += 1
+
+                e = discord.Embed(title=f"Recent {word} count for this channel",
+                                  description=f'{word} has been said {counter} time(s) in recent memory.\n'
+                                              f'Thank you for using my counter.',
+                                  colour=discord.Color.random())
+                e.set_thumbnail(url=self.bot.user.avatar_url)
+
+                await ctx.message.reply(embed=e)
+            except:
+                await ctx.send(f'```Unable to find the phrase: {word}```, '
+                               f'or there was an error in my processing of this command.',
+                               delete_after=10)
+
+    @commands.command(help="baja blast a homie",
+                      pass_context=True)
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    async def baja(self, ctx, member: discord.Member, *, reason=""):
+        embed = discord.Embed(
+            title=f"The stars have aligned...",
+            description=f'',
+            colour=discord.Colour.random()
+        )
+        baja = "https://i.imgur.com/EpwGbns.png"
+
+        embed.add_field(name=f'{ctx.message.author} baja blasted {member.name}',
+                        value=f'\n{reason}')
+
+        embed.set_image(url=baja)
+        if member.avatar:
+            embed.set_thumbnail(url=member.avatar_url)
+
+        await ctx.send(embed=embed)
+        await ctx.message.delete()
+
+
+    # @commands.command()
+    # async def rand_sent(self, ctx):
 
 
 def setup(bot):

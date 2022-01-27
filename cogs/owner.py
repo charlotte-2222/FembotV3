@@ -108,6 +108,13 @@ class OwnerCog(commands.Cog, command_attrs=dict(hidden=True)):
                 await ctx.send(embed=m1bed)
                 return
 
+    @commands.command()
+    @commands.has_permissions(administrator=True)
+    async def say(self, ctx, *words):
+        wordy = ' '.join(words[:])
+        await ctx.message.delete()
+        await ctx.send(wordy, tts=True)
+
 
 def setup(bot):
     bot.add_cog(OwnerCog(bot))

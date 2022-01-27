@@ -14,7 +14,7 @@ import numpy as np
 
 from utilityFunction.config import *
 
-imgur = ImgurClient(imgurC, ImgurL)
+#imgur = ImgurClient(imgurC, ImgurL)
 
 code = "```py\n{0}\n```"
 
@@ -65,7 +65,8 @@ class Images(commands.Cog):
         await ctx.send(embed=e)
 
     @commands.command(help="Try it and see",
-                      pass_context=True)
+                      pass_context=True,
+                      invoke_without_command=True)
     @commands.cooldown(1, 4, commands.BucketType.user)  # allows users to test the response of the bot from Discord
     async def tias(self, ctx):
         st = ['images/TIAS.jpg',
@@ -91,66 +92,66 @@ class Images(commands.Cog):
         await ctx.send(file=discord.File(st + 'damnbro.jpg'))
         await ctx.message.delete()
 
-    @commands.command(help="Indeed",
-                      aliases=["z", "vuvu", "zaza"],
-                      pass_context=True)
-    @commands.cooldown(1, 4, commands.BucketType.user)  # allows users to test the response of the bot from Discord
-    async def blueman(self, ctx):
-        varEmbed = discord.Embed(title='Zavala...')
-        varEmbed.add_field(name='Whether we wanted it or not....',
-                           value="***.... we've stepped into a war with the Cabal on Mars. So let's get to taking out "
-                                 "their command, one by one. Valus Ta'aurc. From what I can gather, he commands the "
-                                 "Siege Dancers from an Imperial Land Tank just outside of Rubicon. He's well "
-                                 "protected, but with the right team, we can punch through those defenses, "
-                                 "take this beast out, and break their grip on Freehold.***")
-        varEmbed.color = discord.Color.orange()
-        varEmbed.set_image(url='https://i.imgur.com/0Aqdhln.jpg')
-        await ctx.send(embed=varEmbed)
-        await ctx.message.delete()
-
-    @commands.command(help="Tell your homies goodmorning",
-                      aliases=["goodmorning"],
-                      pass_context=True)
-    @commands.cooldown(1, 3, commands.BucketType.user)
-    async def gm(self, ctx):
-        r = requests.get(f"https://api.imgur.com/3/album/88Jc9ru/images?client_id={imgurC}").json()
-        author = ctx.author
-        fU = str(author)
-        x = fU.index("#")
-        fU = fU[0:x]
-        em = discord.Embed(title=str(fU) + " said: Good morning everyone ☕", timestamp=datetime.utcnow())
-        em.set_footer(text="Remind ya girl Charlotte to run the thicc command!")
-        indexmax = len(r['data']) - 1
-        size = random.randrange(0, indexmax, 1)
-        em.set_image(url=str(r['data'][size]['link']))
-        em.color = discord.Color.magenta()
-        try:
-            await ctx.send(embed=em)
-            await ctx.message.delete()
-        except:
-            await ctx.send(str(r['data'][size]['link']))
-
-    @commands.command(help="Tell your homies goodnight",
-                      aliases=["goodnight"],
-                      pass_context=True)
-    @commands.cooldown(1, 3, commands.BucketType.user)
-    async def gn(self, ctx):
-        author = ctx.author
-        fU = str(author)
-        x = fU.index("#")
-        fU = fU[0:x]
-        r = requests.get(f"https://api.imgur.com/3/album/3fy68kJ/images?client_id={imgurC}").json()
-        em = discord.Embed(title=str(fU) + " said: Goodnight everyone🌙", timestamp=datetime.utcnow())
-        em.set_footer(text="You guys are the best and I love you all!")
-        indexmax = len(r['data']) - 1
-        size = random.randrange(0, indexmax, 1)
-        em.set_image(url=str(r['data'][size]['link']))
-        em.color = discord.Color.magenta()
-        try:
-            await ctx.send(embed=em)
-            await ctx.message.delete()
-        except:
-            await ctx.send(str(r['data'][size]['link']))
+    # @commands.command(help="Indeed",
+    #                   aliases=["z", "vuvu", "zaza"],
+    #                   pass_context=True)
+    # @commands.cooldown(1, 4, commands.BucketType.user)  # allows users to test the response of the bot from Discord
+    # async def blueman(self, ctx):
+    #     varEmbed = discord.Embed(title='Zavala...')
+    #     varEmbed.add_field(name='Whether we wanted it or not....',
+    #                        value="***.... we've stepped into a war with the Cabal on Mars. So let's get to taking out "
+    #                              "their command, one by one. Valus Ta'aurc. From what I can gather, he commands the "
+    #                              "Siege Dancers from an Imperial Land Tank just outside of Rubicon. He's well "
+    #                              "protected, but with the right team, we can punch through those defenses, "
+    #                              "take this beast out, and break their grip on Freehold.***")
+    #     varEmbed.color = discord.Color.orange()
+    #     varEmbed.set_image(url='https://i.imgur.com/0Aqdhln.jpg')
+    #     await ctx.send(embed=varEmbed)
+    #     await ctx.message.delete()
+    #
+    # @commands.command(help="Tell your homies goodmorning",
+    #                   aliases=["goodmorning"],
+    #                   pass_context=True)
+    # @commands.cooldown(1, 3, commands.BucketType.user)
+    # async def gm(self, ctx):
+    #     r = requests.get(f"https://api.imgur.com/3/album/88Jc9ru/images?client_id={imgurC}").json()
+    #     author = ctx.author
+    #     fU = str(author)
+    #     x = fU.index("#")
+    #     fU = fU[0:x]
+    #     em = discord.Embed(title=str(fU) + " said: Good morning everyone ☕", timestamp=datetime.utcnow())
+    #     em.set_footer(text="Remind ya girl Charlotte to run the thicc command!")
+    #     indexmax = len(r['data']) - 1
+    #     size = random.randrange(0, indexmax, 1)
+    #     em.set_image(url=str(r['data'][size]['link']))
+    #     em.color = discord.Color.magenta()
+    #     try:
+    #         await ctx.send(embed=em)
+    #         await ctx.message.delete()
+    #     except:
+    #         await ctx.send(str(r['data'][size]['link']))
+    #
+    # @commands.command(help="Tell your homies goodnight",
+    #                   aliases=["goodnight"],
+    #                   pass_context=True)
+    # @commands.cooldown(1, 3, commands.BucketType.user)
+    # async def gn(self, ctx):
+    #     author = ctx.author
+    #     fU = str(author)
+    #     x = fU.index("#")
+    #     fU = fU[0:x]
+    #     r = requests.get(f"https://api.imgur.com/3/album/3fy68kJ/images?client_id={imgurC}").json()
+    #     em = discord.Embed(title=str(fU) + " said: Goodnight everyone🌙", timestamp=datetime.utcnow())
+    #     em.set_footer(text="You guys are the best and I love you all!")
+    #     indexmax = len(r['data']) - 1
+    #     size = random.randrange(0, indexmax, 1)
+    #     em.set_image(url=str(r['data'][size]['link']))
+    #     em.color = discord.Color.magenta()
+    #     try:
+    #         await ctx.send(embed=em)
+    #         await ctx.message.delete()
+    #     except:
+    #         await ctx.send(str(r['data'][size]['link']))
 
     @commands.command(help="This is the bean commands, here you are...")
     @commands.cooldown(1, 3, commands.BucketType.user)

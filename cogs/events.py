@@ -22,18 +22,21 @@ class EventsCog(commands.Cog):
 
         while True:
             await self.bot.change_presence(
-                activity=discord.Activity(type=discord.ActivityType.watching, name="Star Wars"))
+                activity=discord.Activity(type=discord.ActivityType.watching, name="the downfall of humanity"))
             await asyncio.sleep(45)
             await self.bot.change_presence(status=discord.Status.online, activity=discord.Game('with code'))
             await asyncio.sleep(45)
             await self.bot.change_presence(
-                activity=discord.Activity(type=discord.ActivityType.watching, name="for bugs..."))
+                activity=discord.Activity(type=discord.ActivityType.watching, name="you..."))
             await asyncio.sleep(45)
             await self.bot.change_presence(
-                activity=discord.Activity(type=discord.ActivityType.streaming, name="now with music!"))
+                activity=discord.Activity(type=discord.ActivityType.streaming, name="deez nuts"))
             await asyncio.sleep(45)
             await self.bot.change_presence(status=discord.Status.online,
-                                           activity=discord.Game("on the Minecraft server!"))
+                                           activity=discord.Game("breakfastclub.my.pebble.host"))
+            await asyncio.sleep(45)
+            await self.bot.change_presence(
+                activity=discord.Activity(type=discord.ActivityType.watching, name="for help"))
             await asyncio.sleep(45)
 
     @commands.Cog.listener()
@@ -58,7 +61,7 @@ class EventsCog(commands.Cog):
         if member.bot:
             return  # ignore all bots
         print("\n--------------\n")
-        print(time.strftime("Joined at:\n" + "%H:%M:%S\n"))
+        print(time.strftime(f"{member} joined at:\n" + "%H:%M:%S\n"))
         welEmb = discord.Embed(title=f'{b}',
                                url="https://docs.google.com/document/d/1YTSSADP1NDr310eKNQJNfy-yWwgoRjdTOkBffzIMgD4/edit?usp=sharing",
                                description=f"Welcome to the server, {member.mention}!\n"
@@ -71,6 +74,9 @@ class EventsCog(commands.Cog):
         wel_cum = self.bot.get_channel(698670684154363904)
 
         await wel_cum.send(embed=welEmb)
+
+
+
         await asyncio.sleep(30)
 
     @commands.Cog.listener()

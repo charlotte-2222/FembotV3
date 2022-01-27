@@ -43,7 +43,7 @@ class Misc(commands.Cog):
         staff = [i for i in ctx.guild.members if not i.bot and
                  694709812528677008 in [r.id for r in i.roles]]
         helpers = [i for i in ctx.guild.members if not i.bot and
-                   834904906640261161 in [r.id for r in i.roles]]
+                   914546242850271285 in [r.id for r in i.roles]]
 
         for i in staff:
             if i.status == discord.Status.online: online.append(

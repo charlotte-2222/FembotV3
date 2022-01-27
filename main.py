@@ -23,7 +23,8 @@ initial_extensions = ['cogs.admin',
                       'cogs.events',
                       'cogs.omevent',
                       'cogs.music',
-                      'cogs.insp'
+                      'cogs.insp',
+                      'cogs.tasks'
                       ]
 
 bot = commands.Bot(command_prefix=get_prefix,
@@ -42,6 +43,7 @@ class MyNewHelp(commands.MinimalHelpCommand):
             emby = discord.Embed(description=page)
             emby.color = discord.Color.magenta()
             emby.set_thumbnail(url=bot.user.avatar_url)
+           # emby.set_footer(text=f"Help requested by {self.discord.Member}")
             await destination.send(embed=emby)
 
 

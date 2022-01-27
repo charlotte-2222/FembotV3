@@ -1,6 +1,6 @@
+import asyncio
 import os
 import urllib.request
-from asyncio import sleep
 import random
 from datetime import datetime, time
 from typing import Union
@@ -8,7 +8,7 @@ from typing import Union
 from pytz import timezone
 
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 from utilityFunction.timeConvert import convert
 
@@ -24,12 +24,14 @@ class Server(commands.Cog, command_attrs=dict(hidden=True)):
     def __init__(self, bot):
         self.bot = bot
 
+    # self.static_ping.start()
+
     @commands.command()
     @commands.has_guild_permissions(manage_roles=True)
     async def thicc(self, ctx):
         """Allows server owner to pick the next thicc"""
         count = len(open('text_dir/thiccNames.txt').readlines())
-        with open('text_dir/thiccNames.txt', 'w')as f:
+        with open('text_dir/thiccNames.txt', 'w') as f:
             for member in ctx.guild.members:
                 try:
                     print(f'{member.name}', file=f)
@@ -40,10 +42,14 @@ class Server(commands.Cog, command_attrs=dict(hidden=True)):
         await ctx.send("possible thiccs updated <:9154_PogU:712671828291747864>\n")
         print(f"done printing names\nCount: {count}")
         channel = self.bot.get_channel(806701505759019058)
-        thicc = open('text_dir/thiccNames.txt').read().splitlines()
-        thiccy = random.choice(thicc)
-        await ctx.message.reply(f"The new daily thicc will be: {thiccy}", mention_author=True)
-        await channel.edit(name=f"Thicc: {thiccy}")
+        #thicc = open('text_dir/thiccNames.txt').read().splitlines()
+        #thiccy = random.choice(thicc)
+        thicc=random.choice(ctx.guild.members)
+        async with ctx.channel.typing():
+            await ctx.message.reply(f"The new daily thicc will be: {thicc}, please prepare a speech <@!{thicc.id}>!",
+                                    mention_author=True)
+            await channel.edit(name=f"Thicc: {thicc.name}")
+
 
     @commands.command(help="Get the weather for a city `^weather [city]`",
                       aliases=["wt"], hidden=False)
@@ -64,10 +70,10 @@ class Server(commands.Cog, command_attrs=dict(hidden=True)):
     async def serverinfo(self, ctx):
         guild = ctx.guild
         embed = discord.Embed(
-            color=discord.guild.Colour.magenta(), timestamp=datetime.utcnow(),
-            title=f":face_with_monocle:  Server Info For {guild.name}",
+            color=discord.Color.random(), timestamp=datetime.utcnow(),
+            title=f":rainbow_flag:  <:nb_flag:873229983626170388>  :transgender_flag: ➤ {guild.name}",
             description="\n— "
-                        "\n➤ Shows all information about a guild."
+                        f"\n➤ Server info for the {guild.name}"
                         "\n➤ The information will be listed below!"
                         "\n —"
         )
@@ -100,17 +106,19 @@ class Server(commands.Cog, command_attrs=dict(hidden=True)):
         embed.add_field(name="• Guild owner: ", value=guild.owner)
         embed.add_field(name="• Guild made in: ", value=guild.created_at.strftime("%A %d, %B %Y"))
         embed.add_field(name="• Channels count: ", value=len(guild.channels))
-        embed.add_field(name="• Guild region: ", value=regions[guild.region.name])
-        embed.add_field(name="• Guild verification: ", value=verifications[guild.verification_level.name])
+        # embed.add_field(name="• Guild region: ", value=(regions[guild.region.name]))
+        embed.add_field(name="• Guild verification: ", value=(verifications[guild.verification_level.name]))
         embed.add_field(name="• Member count: ", value=f"{guild.member_count}")
-        embed.add_field(name="• Number of Nitro Boosts: ",
+        embed.add_field(name="• Current Nitro Boost Count: ",
                         value=guild.premium_subscription_count or "hmmm... nothing here... :ghost:")
         embed.add_field(name="• Fembot Prefix ",
                         value="`^` •  `@Fembot`")
 
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed)
 
-    @commands.command(help='get the time')
+    @commands.command(help='get the time', hidden=False,
+                      pass_context=True
+                      )
     async def time(self, ctx, *timeZ):
         th = str(timeZ).upper()
         td = str(*timeZ)
@@ -169,6 +177,11 @@ class Server(commands.Cog, command_attrs=dict(hidden=True)):
             pg = datetime.now(p)
             e.add_field(name=f"Asia/Singapore", value=pg.strftime(f'%I:%M:%S %p\n' +
                                                                   f'%m/%d/%Y'))
+        elif "NO" in th:
+            p = timezone('Europe/Oslo')
+            pg = datetime.now(p)
+            e.add_field(name=f"Norway", value=pg.strftime(f'%I:%M:%S %p\n' +
+                                                                  f'%m/%d/%Y'))
         else:
 
             e.add_field(name=f"But.... {ctx.author.name} is dumb <:flop_laugh:833181636924669972> ",
@@ -185,47 +198,51 @@ class Server(commands.Cog, command_attrs=dict(hidden=True)):
                                'mc_status',
                                'mc_ping'],
                       hidden=False,
-                      description="Pinging the RAD server for uptime / Availabilitity")
-    # async def ping_mc_server(self, ctx):
-    #     try:
-    #         server = MinecraftServer(str("rad.craftersland.net"), port=25565)
-    #         status = server.status()
-    #         online = status.players.online
-    #         max_players = status.players.max
-    #         ping = round(status.latency)
-    #         version = status.raw['version']['name']
-    #         up = discord.Embed(title="`RAD 1 | Craftersland`",
-    #                            description=f"Response time: {ping}\n"
-    #                                        f"Online: :white_check_mark:\n"
-    #                                        f"Version: {version}\n"
-    #                                        f"Max Players: {max_players}",
-    #                            colour=discord.Colour.green(),
-    #                            timestamp=datetime.utcnow()
-    #                            )
-    #         up.add_field(name="Players Online Now", value=f"{online}\n")
-    #         await ctx.send(embed=up)
-    #     except (ConnectionRefusedError,
-    #             OSError
-    #             ) as e:
-    #         offline = discord.Embed(
-    #             title=":exclamation: The Server is offline :exclamation:",
-    #             description="Sorry kids, the server is currently unavailable. "
-    #                         "Check back later. It's possible that the server is either under maintenance,"
-    #                         "or has briefly undergone a reset. Thank you for understanding.",
-    #             colour=discord.Color.red(),
-    #             timestamp=datetime.utcnow()
-    #         )
-    #         offline.add_field(name="Error:", value=f"{e}")
-    #         await ctx.send(embed=offline)
-
+                      description="Pinging the Breakfast Club server for uptime / Availabilitity")
     async def ping_mc_server(self, ctx):
-        e = discord.Embed(
-            title='~ Deprecated Command! ~',
-            description='tl;dr\nMany servers have come and gone, we no longer have one.\n'
-                        'Contact an admin if you want more info or wish to host one.',
-            timestamp=datetime.utcnow()
-        )
-        await ctx.send(embed=e)
+        try:
+            server = MinecraftServer(str("breakfastclub.my.pebble.host"), port=25606)
+            status = server.status()
+            online = status.players.online
+            max_players = status.players.max
+            ping = round(status.latency)
+            version = status.raw['version']['name']
+            up = discord.Embed(title="`The Breakfast Club Minecraft Server`",
+                               description=f"Response time: {ping}\n"
+                                           f"Online: :white_check_mark:\n"
+                                           f"Version: {version}\n"
+                                           f"Max Players: {max_players}\n\n"
+                                           f"**Server Address:**\n"
+                                           f"`breakfastclub.my.pebble.host`",
+                               colour=discord.Colour.green(),
+                               timestamp=datetime.utcnow()
+                               )
+            up.add_field(name="Players Online Now", value=f"{online}\n")
+            msg = await ctx.send(embed=up)
+            # await asyncio.sleep(.50)
+            # try:
+            #     await msg.edit(embed=up)
+            # except Exception as e:
+            #     print(f'Failed to edit\n{e}')
+
+        except (ConnectionRefusedError,
+                OSError
+                ) as e:
+            offline = discord.Embed(
+                title=":exclamation: The Server is offline :exclamation:",
+                description="Sorry kids, the server is currently unavailable. "
+                            "Check back later. It's possible that the server is either under maintenance,"
+                            "or has briefly undergone a reset. Thank you for understanding.",
+                colour=discord.Color.red(),
+                timestamp=datetime.utcnow()
+            )
+            offline.add_field(name="Error:", value=f"{e}")
+            msg = await ctx.send(embed=offline)
+            # await asyncio.sleep(.50)
+            # try:
+            #     await msg.edit(embed=offline)
+            # except Exception as e:
+            #     print(f'Failed to edit\n{e}')
 
     @commands.command()
     async def info(self, ctx, *, user: Union[discord.Member, discord.User] = None):
@@ -287,7 +304,7 @@ class Server(commands.Cog, command_attrs=dict(hidden=True)):
     @commands.has_guild_permissions(kick_members=True)
     async def create_text(self, ctx, *, name=""):
         try:
-            await ctx.guild.create_text_channel(f'{name}')
+            await ctx.guild.create_text_channel(f"{name}'s")
         except:
             await ctx.guild.create_text_channel(f'new-txt-chan')
 
@@ -298,6 +315,46 @@ class Server(commands.Cog, command_attrs=dict(hidden=True)):
             await ctx.guild.create_voice_channel(f'{name}')
         except:
             await ctx.guild.create_voice_channel(f'new vc')
+
+    # @tasks.loop()
+    # async def static_ping(self):
+    #     channel = self.bot.get_channel(861323494478708807)
+    #     try:
+    #         server = MinecraftServer(str("breakfastclub.my.pebble.host"), port=25606)
+    #         status = server.status()
+    #         online = status.players.online
+    #         max_players = status.players.max
+    #         ping = round(status.latency)
+    #         version = status.raw['version']['name']
+    #         up = discord.Embed(title="`The Breakfast Club Minecraft Server`",
+    #                            description=f"Response time: {ping}\n"
+    #                                        f"Online: :white_check_mark:\n"
+    #                                        f"Version: {version}\n"
+    #                                        f"Max Players: {max_players}\n\n"
+    #                                        f"**Server Address:**\n"
+    #                                        f"`breakfastclub.my.pebble.host`",
+    #                            colour=discord.Colour.green(),
+    #                            timestamp=datetime.utcnow()
+    #                            )
+    #         up.add_field(name="Players Online Now", value=f"{online}\n")
+    #        # await channel.send(embed=up)
+    #        # await asyncio.sleep(.50)
+    #        # await channel.edit(embed=up)
+    #     except (ConnectionRefusedError,
+    #             OSError
+    #             ) as e:
+    #         offline = discord.Embed(
+    #             title=":exclamation: The Server is offline :exclamation:",
+    #             description="Sorry kids, the server is currently unavailable. "
+    #                         "Check back later. It's possible that the server is either under maintenance,"
+    #                         "or has briefly undergone a reset. Thank you for understanding.",
+    #             colour=discord.Color.red(),
+    #             timestamp=datetime.utcnow()
+    #         )
+    #         offline.add_field(name="Error:", value=f"{e}")
+    #         #await channel.edit(embed=offline)
+    #        # await asyncio.sleep(.50)
+    #         #await channel.edit(embed=up)
 
 
 def setup(bot):
