@@ -2,6 +2,8 @@ import asyncio
 import os
 import urllib.request
 import random
+import hashlib
+import sqlite3
 from datetime import datetime, time
 from typing import Union
 
@@ -13,6 +15,15 @@ from discord.ext import commands, tasks
 from utilityFunction.timeConvert import convert
 
 from mcstatus import MinecraftServer
+
+
+
+db = sqlite3.connect('quotes.db')
+cursor = db.cursor()
+cursor.execute('CREATE TABLE IF NOT EXISTS quotes(hash TEXT primary key, user TEXT, message TEXT, date_added TEXT)')
+print("Loaded Quotes database")
+db.commit()
+
 
 
 def to_emoji(c):
@@ -42,14 +53,13 @@ class Server(commands.Cog, command_attrs=dict(hidden=True)):
         await ctx.send("possible thiccs updated <:9154_PogU:712671828291747864>\n")
         print(f"done printing names\nCount: {count}")
         channel = self.bot.get_channel(806701505759019058)
-        #thicc = open('text_dir/thiccNames.txt').read().splitlines()
-        #thiccy = random.choice(thicc)
-        thicc=random.choice(ctx.guild.members)
+        # thicc = open('text_dir/thiccNames.txt').read().splitlines()
+        # thiccy = random.choice(thicc)
+        thicc = random.choice(ctx.guild.members)
         async with ctx.channel.typing():
             await ctx.message.reply(f"The new daily thicc will be: {thicc}, please prepare a speech <@!{thicc.id}>!",
                                     mention_author=True)
             await channel.edit(name=f"Thicc: {thicc.name}")
-
 
     @commands.command(help="Get the weather for a city `^weather [city]`",
                       aliases=["wt"], hidden=False)
@@ -316,45 +326,104 @@ class Server(commands.Cog, command_attrs=dict(hidden=True)):
         except:
             await ctx.guild.create_voice_channel(f'new vc')
 
-    # @tasks.loop()
-    # async def static_ping(self):
-    #     channel = self.bot.get_channel(861323494478708807)
-    #     try:
-    #         server = MinecraftServer(str("breakfastclub.my.pebble.host"), port=25606)
-    #         status = server.status()
-    #         online = status.players.online
-    #         max_players = status.players.max
-    #         ping = round(status.latency)
-    #         version = status.raw['version']['name']
-    #         up = discord.Embed(title="`The Breakfast Club Minecraft Server`",
-    #                            description=f"Response time: {ping}\n"
-    #                                        f"Online: :white_check_mark:\n"
-    #                                        f"Version: {version}\n"
-    #                                        f"Max Players: {max_players}\n\n"
-    #                                        f"**Server Address:**\n"
-    #                                        f"`breakfastclub.my.pebble.host`",
-    #                            colour=discord.Colour.green(),
-    #                            timestamp=datetime.utcnow()
-    #                            )
-    #         up.add_field(name="Players Online Now", value=f"{online}\n")
-    #        # await channel.send(embed=up)
-    #        # await asyncio.sleep(.50)
-    #        # await channel.edit(embed=up)
-    #     except (ConnectionRefusedError,
-    #             OSError
-    #             ) as e:
-    #         offline = discord.Embed(
-    #             title=":exclamation: The Server is offline :exclamation:",
-    #             description="Sorry kids, the server is currently unavailable. "
-    #                         "Check back later. It's possible that the server is either under maintenance,"
-    #                         "or has briefly undergone a reset. Thank you for understanding.",
-    #             colour=discord.Color.red(),
-    #             timestamp=datetime.utcnow()
-    #         )
-    #         offline.add_field(name="Error:", value=f"{e}")
-    #         #await channel.edit(embed=offline)
-    #        # await asyncio.sleep(.50)
-    #         #await channel.edit(embed=up)
+
+
+    @commands.command(help="Adds a quote of the mentioned user to Fembot's Database",
+                      hidden=False,
+                      aliases=['qt'])
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    async def quote(self, ctx, *, message: str):
+        # split the message into words
+        string = str(message)
+        temp = string.split()
+
+        # take the username out
+        user = temp[0]
+        del temp[0]
+
+        # join the message back together
+        text = " ".join(temp)
+
+        if user[1] != '@':
+            await ctx.reply("Use ```@[user] [message]``` to quote a person")
+            return
+
+        uniqueID = hash(user + message)
+
+        # date and time of the message
+        time = datetime.now()
+        formatted_time = str(time.strftime("%a, %d %b %Y %H:%M:%S"))
+
+        # find if message is in the db already
+        cursor.execute("SELECT count(*) FROM quotes WHERE hash = ?", (uniqueID,))
+        find = cursor.fetchone()[0]
+
+        if find > 0:
+            return
+
+        # insert into database
+        cursor.execute("INSERT INTO quotes VALUES(?,?,?,?)", (uniqueID, user, text, formatted_time))
+        await ctx.reply("Quote successfully added")
+
+        db.commit()
+
+        # number of words in the database
+        rows = cursor.execute("SELECT * from quotes")
+
+        # log to terminal
+        print(str(len(rows.fetchall())) + ". added - " + str(user) + ": \"" + str(
+            text) + "\" to database at " + formatted_time)
+
+    @commands.command(help="Tag a user to pull one of their quotes from the database (randomly chosen)",
+                      aliases=['gq'],
+                      hidden=False)
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    async def getquote(self, ctx, message: str):
+        # sanitise name
+        user = (message,)
+
+        try:
+            # query random quote from user
+            cursor.execute("SELECT message,date_added FROM quotes WHERE user=(?) ORDER BY RANDOM() LIMIT 1", user)
+            query = cursor.fetchone()
+
+            # adds quotes to message
+            output = "\"" + str(query[0]) + "\""
+
+            # log
+            print(message + ": \"" + output + "\" printed to the screen " + str(query[1]))
+
+            # embeds the output to make it pretty
+            style = discord.Embed(name="responding quote",
+                                  description="- " + message + " " + str(query[1]),
+                              colour=discord.Color.random())
+            style.set_author(name=output)
+            await ctx.reply(embed=style)
+
+        except Exception:
+
+            await ctx.reply("No quotes of that user found")
+
+        db.commit()
+
+    @commands.command(help="Pull a random quote from the database (across all users)",
+                      aliases=['rq'],
+                      hidden=False)
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    async def randomquote(self, ctx):
+
+        cursor.execute("SELECT user,message,date_added FROM quotes ORDER BY RANDOM() LIMIT 1")
+        query = cursor.fetchone()
+
+        # log
+        print(query[0] + ": \"" + query[1] + "\" printed to the screen " + str(query[2]))
+
+        # embeds the output
+        style = discord.Embed(name="responding quote",
+                              description="- " + str(query[0]) + " " + str(query[2]),
+                              colour=discord.Color.random())
+        style.set_author(name=str(query[1]))
+        await ctx.send(embed=style)
 
 
 def setup(bot):

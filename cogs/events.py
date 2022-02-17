@@ -2,14 +2,21 @@ import asyncio
 import random
 from datetime import datetime
 import time
+import sqlite3
+import hashlib
+
 
 import discord
 from discord.ext import tasks, commands
 
 
+
 class EventsCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+
+
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -73,11 +80,9 @@ class EventsCog(commands.Cog):
         welEmb.color = discord.Color.random()
         wel_cum = self.bot.get_channel(698670684154363904)
 
+
         await wel_cum.send(embed=welEmb)
 
-
-
-        await asyncio.sleep(30)
 
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member):
@@ -124,6 +129,8 @@ class EventsCog(commands.Cog):
             return
         else:
             await ctx.send(embed=errorEm)
+
+
 
 
 def setup(bot):

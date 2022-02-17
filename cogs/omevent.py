@@ -36,6 +36,8 @@ class OnMessCog(commands.Cog):
             #await message.reply(f"Oh no! <@!549292136147845140> didn't tell you that was a bad word..."
                                # f"\nI'll make sure to DM her so that this is cleared up... :)")
             await feesh.send('Feeesh! You should tell people not to say your ***slur!***')
+        if "swat" in content:
+            await message.reply(f'https://giphy.com/gifs/cbs-swat-shemar-moore-cbs-jmSjPi6soIoQCFwaXJ')
 
 
         with open('text_dir/badwords.txt', 'r') as f:

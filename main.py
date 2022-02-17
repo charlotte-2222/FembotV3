@@ -1,5 +1,7 @@
 import discord
 from discord.ext import commands
+import hashlib
+import sqlite3
 
 from utilityFunction.config import token
 
@@ -23,8 +25,8 @@ initial_extensions = ['cogs.admin',
                       'cogs.events',
                       'cogs.omevent',
                       'cogs.music',
-                      'cogs.insp',
-                      'cogs.tasks'
+                      'cogs.insp'
+
                       ]
 
 bot = commands.Bot(command_prefix=get_prefix,

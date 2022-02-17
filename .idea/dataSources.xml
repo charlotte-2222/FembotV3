@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="MongoDB-Atlas" uuid="f9af24ed-ebc3-43c1-a0d7-ccfcc6217123">
-      <driver-ref>mongo</driver-ref>
+    <data-source source="LOCAL" name="ActiveQuoteTable" uuid="fb6759c5-9933-4afa-9545-94862b17b672">
+      <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>com.dbschema.MongoJdbcDriver</jdbc-driver>
-      <jdbc-url>mongodb+srv://cluster0.1ii2y.mongodb.net/Cluster0</jdbc-url>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\ZChil\PycharmProjects\FembotV3\quotes.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
