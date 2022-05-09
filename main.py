@@ -12,21 +12,19 @@ def get_prefix(bot, message):
         return ['?', '^']
     return commands.when_mentioned_or(*prefixes)(bot, message)
 
+# alteration of release on 5/9/22 (Charlotte Childers)
 
 initial_extensions = ['cogs.admin',
                       'cogs.fun',
-                      'cogs.hentai',
                       'cogs.imageFun',
                       'cogs.missc',
                       'cogs.owner',
                       'cogs.reddit',
-                      'cogs.redditNSFW',
                       'cogs.serverStuff',
                       'cogs.events',
                       'cogs.omevent',
                       'cogs.music',
                       'cogs.insp'
-
                       ]
 
 bot = commands.Bot(command_prefix=get_prefix,
