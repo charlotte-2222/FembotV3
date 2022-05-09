@@ -19,7 +19,7 @@ This Bot is developed solely for the client, however all parties are welcome to 
 - Collect usernames/ID's -> Write to .txt
 <h3>APIs and Fun Stuff</h3>
 
-- Neko API
+- SQLite Database (Quote your friends!)
 - PRAW scrapping Reddit
 - Imgur
 - Weather API
