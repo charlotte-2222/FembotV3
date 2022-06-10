@@ -1,4 +1,4 @@
-<h1 align ='center'>Fembot project version 3.0.1 </h1>
+<h1 align ='center'>Fembot project version 3.1.1 </h1>
 
 <div align="center">
   <img src="https://github.com/charlotte-2222/FemboyBot/blob/main/fembotPFP2020.png" width="300" height="300">
@@ -15,13 +15,16 @@ This Bot is developed solely for the client, however all parties are welcome to 
 
 - Minor Admin and Server utility functions
 - Various animals can be webscraped
+
+    - depends on usage/possibly deprecated due to API(s)
+
 - Welcomes new members
 - Collect usernames/ID's -> Write to .txt
 <h3>APIs and Fun Stuff</h3>
 
 - SQLite Database (Quote your friends!)
-- PRAW scrapping Reddit
-- Imgur
+- ~~PRAW scrapping Reddit~~ | Deprecated
+- ~~Imgur~~ | Deprecated
 - Weather API
 - Music Player Support! *(Despite the C&D's w/ Rhythm & Groovy)*
 
