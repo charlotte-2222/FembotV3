@@ -29,9 +29,9 @@ ytdlopts = {
     'no_warnings': True,
     'default_search': 'auto',
     'source_address': '0.0.0.0',  # ipv6 addresses cause issues sometimes
-    'username': 'ayy.charlotte@gmail.com',
-    'password': 'MJKILP9780%%%777z',
-    'videopassword': 'MJKILP9780%%%777z'
+    'username': 'user',
+    'password': 'pass',
+    'videopassword': 'pass'
 }
 
 ffmpegopts = {
@@ -53,9 +53,9 @@ class InvalidVoiceChannel(VoiceConnectionError):
 
 
 class YTDLSource(discord.PCMVolumeTransformer):
-    username = 'ayy.charlotte@gmail.com'
-    password = 'MJKILP9780%%%777z'
-    videopassword = 'MJKILP9780%%%777z'
+    username = '--'
+    password = '--'
+    videopassword = '--'
 
     def __init__(self, source, *, data, requester):
         super().__init__(source)
